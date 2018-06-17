@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title></title>
+ <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+  <link rel="stylesheet" href="assets/css/weui.css"/>
+  <link rel="stylesheet" href="assets/css/weui2.css"/>
+  <link rel="stylesheet" href="assets/css/weui3.css"/>
+  <script src="assets/js/zepto.min.js"></script>
+  <script src="assets/js/iscroll.js"></script>
+	<script src="assets/js/swipe.js"></script>
+	<style>
+		.clearfix:after{
+			content:"";
+			display:block;
+			clear:both;
+			overflow:hidden;
+		}
+		
+	</style>
+</head>
+
+<body ontouchstart style="background-color: #f8f8f8;">
+<div class="weui-form-preview">
+            <div class="weui-form-preview-hd">
+                <label class="weui-form-preview-label">学号</label>
+                <em class="weui-form-preview-value">N001</em>
+            </div>
+            <div class="weui-form-preview-bd clearfix">
+			<p class="clearfix">
+                    <label class="weui-form-preview-label ">姓名</label>
+                    <span class="weui-form-preview-value" id="name">张三</span>
+                </p>
+                <p class="clearfix">
+                    <label class="weui-form-preview-label">性别</label>
+                    <span class="weui-form-preview-value" id="sex">男</span>
+                </p>
+                <p class="clearfix">
+                    <label class="weui-form-preview-label">学院</label>
+                    <span class="weui-form-preview-value" id="dept">电信学院</span>
+                </p>
+               <p class="clearfix">
+                    <label class="weui-form-preview-label">专业</label>
+                    <span class="weui-form-preview-value" id="major">软件技术</span>
+                </p>
+				<p class="clearfix">
+                    <label class="weui-form-preview-label">电话</label>
+                    <span class="weui-form-preview-value" id="tel">138</span>
+                </p>
+            </div>
+            <div class="weui-form-preview-ft clearfix" >
+                <a class="weui-form-preview-btn weui-form-preview-btn-primary" href="javascript:history.go(-1);">返回</a>
+				 <a id="edit_tel" class="weui-form-preview-btn weui-form-preview-btn-primary" href="javascript:;">修改电话</a>
+            </div>
+</div>
+
+		
+<script>
+$(document).on("click", "#edit_tel", function() {
+    $.prompt("输入新的电话", "联系方式", function(text) {
+        //点击确定执行
+		var tel = text;
+		var no = localStorage.no;
+		
+		//请求后台修改数据
+		$.post(
+		"edit_tel.php",
+		{no:no, tel:tel},
+		function(data){
+			var obj = $.parseJSON(data);
+			if(obj.success){
+				//更新页面
+				$("#tel").html(tel);
+			}else{
+				//提示修改失败
+			}
+		}
+		);
+    });
+});
+	  
+$(function(){
+
+	var no = localStorage.no;
+	
+	$.post(
+	"getUser.php",
+	{no:no},
+	function(data){
+		var obj = $.parseJSON(data);
+		
+		$("#name").html(obj.rows.name);
+		$("#dept").html(obj.rows.dept);
+		$("#sex").html(obj.rows.sex);
+		$("#major").html(obj.rows.major);
+		$("#tel").html(obj.rows.tel);
+		
+	}
+	);
+	
+});
+
+</script>
+</body>
+</html>

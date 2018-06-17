@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title></title>
+ <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+  <link rel="stylesheet" href="assets/css/weui.css"/>
+  <link rel="stylesheet" href="assets/css/weui2.css"/>
+  <link rel="stylesheet" href="assets/css/weui3.css"/>
+  <script src="assets/js/zepto.min.js"></script>
+  <script src="assets/js/iscroll.js"></script>
+	<script src="assets/js/swipe.js"></script>
+</head>
+
+<body ontouchstart style="background-color: #f8f8f8;">
+<div class="weui_cells weui_cells_form" style="margin-top:200px">
+            <div class="weui_cell">
+                <div class="weui_cell_hd"><label class="weui_label">学号</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input" type="text" id="no" placeholder="请输入学号"/>
+                </div>
+            </div>
+			 <div class="weui_cell">
+                <div class="weui_cell_hd"><label class="weui_label">密码</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input" type="password" id="password" pattern="[0-9]*" placeholder="请输密码"/>
+                </div>
+            </div>
+</div>
+<a href="javascript:onLogin();" class="weui_btn weui_btn_primary">登录</a>
+<a href="javascript:;" class="weui_btn weui_btn_default">返回</a>
+<script>
+function onLogin(){
+	var no = $("#no").val();
+	var password = $("#password").val();
+	
+	//通过POST提交用户名和密码给某个php后端，php验证后返回给前端
+	$.post(
+	"login.php",
+	{no:no, password:password},
+	function(data){
+		//将返回的json格式转换为JS能处理的对象
+		var obj = $.parseJSON(data);
+		if(obj.success){
+			//保存并跳转
+			localStorage.password = password;
+			localStorage.no = no;
+			window.location.href="my.html";
+		}else{
+			alert("用户名或密码错误");
+		}
+	}
+	);
+	
+	/*
+	if(no == "admin" && password == "admin"){
+		//保存并跳转
+		localStorage.password = "admin";
+		localStorage.no = "admin";
+		window.location.href="my.html";
+	}else{
+		alert("用户名或密码错误");
+	}
+	*/
+}
+</script>
+</body>
+</html>

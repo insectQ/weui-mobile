@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title></title>
+ <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+  <link rel="stylesheet" href="assets/css/weui.css"/>
+  <link rel="stylesheet" href="assets/css/weui2.css"/>
+  <link rel="stylesheet" href="assets/css/weui3.css"/>
+  <script src="assets/js/zepto.min.js"></script>
+  <script src="assets/js/iscroll.js"></script>
+	<script src="assets/js/swipe.js"></script>
+</head>
+
+<body ontouchstart style="background-color: #f8f8f8;">
+
+		<div class="weui_cells weui_cells_access" style="margin-top:0">
+
+            <a class="weui_cell" href="myinfo.html">
+                <div class="weui_cell_hd">
+				<img src="assets/images/my.png" alt="" style="width:60px;margin-right:5px;display:block"></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <p id="name"></p>
+                </div>
+				<span class="weui_cell_ft">个人详情</span>
+            </a>
+		</div>
+        <hr />
+<div class="weui_panel">
+            <div class="weui_panel_hd">我的订单</div>
+            <div class="weui_panel_bd">
+                <div class="weui_media_box weui_media_small_appmsg">
+                    <div class="weui_cells weui_cells_access">
+                        <a class="weui_cell" href="javascript:;">
+                            <div class="weui_cell_hd"><img src="assets/images/xiezi.jpg" alt="" style="width:20px;margin-right:5px;display:block"></div>
+                            <div class="weui_cell_bd weui_cell_primary">
+                                <p>耐克山寨版运动鞋</p>
+                            </div>
+							
+                            <span class="weui_cell_ft"></span>
+                        </a>
+                        <a class="weui_cell" href="javascript:;">
+                            <div class="weui_cell_hd"><img src="assets/images/yifu.jpg" alt="" style="width:20px;margin-right:5px;display:block"></div>
+                            <div class="weui_cell_bd weui_cell_primary">
+                                <p>优衣库上衣</p>
+                            </div>
+                            <span class="weui_cell_ft"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>  
+
+<a href="javascript:onOut();" class="weui_btn weui_btn_warn">退出</a>
+<a href="index.html" class="weui_btn weui_btn_default">返回</a>
+		
+<script>
+
+function onOut(){
+	//删除保存的用户名和密码
+	localStorage.password = "undefined";
+	localStorage.no = "undefined";
+	//跳转登录界面
+	window.location.href="index.html";
+}
+//判断是否存储用户名和密码，没有跳转登录
+$(function(){
+	var no = localStorage.no;
+	var password = localStorage.password;
+	//如果学号为空，直接跳转登录界面
+	if(no == undefined){
+		window.location.href="login.html";
+	}
+	
+	//登录成功后，将用户的名字填入页面
+	$.post(
+	"getUser.php",
+	{no:no},
+	function(data){
+		var obj = $.parseJSON(data);
+		
+		$("#name").html(obj.rows.name);
+		
+	}
+	);
+
+	//获得密码和用户，进行验证
+	
+	//alert(no == "undefined");
+	
+	if(no == "undefined" || password == "undefined"){
+		window.location.href="login.html";
+	}
+});
+</script>
+</body>
+</html>
